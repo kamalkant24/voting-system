@@ -21,11 +21,14 @@ exports.register = async (req, res) => {
       return res.status(400).json({ error: "User with this wallet address already exists!" });
     }
 
+    // Hash the password before saving
+    const hashedPassword = await hashPassword(password);
+
     // Create new user
     const user = new User({
       name,
       email,
-      password, // You should hash this before saving it (bcrypt, etc.)
+      password: hashedPassword, // Storing the hashed password
       walletAddress
     });
     
